@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Board</title>
+</head>
+<body>
+   <form id="board" action="/board/list" th:object="${board}" method="get">
+
+      <a href="/board/insert" >글쓰기</a>
+      <input type="text" name="keyword" /><input type="submit" value="검색" />
+      <table border="1">
+         <tr>
+            <td align="center" width="80">글번호</td>
+            <td align="left" width="320">제목</td>
+            <td align="center" width="100">작성자</td>
+            <td align="center" width="180">등록일자</td>
+            <td align="center" width="180">수정일자</td>
+         </tr>
+         
+         <tr th:if="${#lists.isEmpty(list)}">
+            <td colspan="5" align="center">조회된 데이터가 없습니다.</td>
+         </tr>
+         
+         <tr th:each="board : ${list}">
+            <td align="center" th:text="${board.boardNo}"></td>     
+            <td align="left"> 
+               <a th:href="@{|/board/read?boardNo=${board.boardNo}|}" th:text="${board.title}"></a>
+            </td>
+            <td align="right" th:text="${board.writer}"></td>
+            <td align="center" th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td align="center" th:text="${#dates.format(board.updDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+         </tr>
+      </table>
+      
+   </form>
+</body>
+</html>
+
