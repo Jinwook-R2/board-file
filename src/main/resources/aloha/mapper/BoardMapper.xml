@@ -48,4 +48,38 @@
 		        , reg_date DESC
 	</select>
 	
+	<!-- 파일 업로드 -->
+	<insert id="uploadFile">
+		<selectKey order="BEFORE" keyProperty="refNo" resultType="int">
+			<if test="refNo == 0">
+				SELECT MAX(board_no)
+				 FROM board
+			</if>
+			<if test="refNo != 0">
+				SELECT #{refNo} from dual
+			</if>
+		</selectKey>
+		INSERT INTO file_info (ref_no, file_name, full_name)
+					   VALUES (#{refNo}, #{fileName}, #{fullName})
+	</insert>
+	
+	<!-- 파일 목록 -->
+	<select id="fileList" resultType="FileInfo">
+		SELECT *
+		  FROM file_info
+		 WHERE ref_no = #{refNo}
+	</select>
+	
+	<!-- 파일 읽기 -->
+	<select id="readFile" resultType="FileInfo">
+		SELECT *
+		  FROM file_info
+		 WHERE file_no = #{fileNo}
+	</select>	
+	
+	<!-- 파일 삭제 -->
+	<delete id="deleteFile">
+		DELETE FROM file_info WHERE file_no = ${fileNo}
+	</delete>
+	
 </mapper>

@@ -5,6 +5,14 @@
 	<title>Insert title here</title>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script src="/js/board.js"></script>
+	<script src="/js/thumbnail.js"></script>
+	<script>
+		
+	$(function(){
+		const boardNo = $('#boardNo').val();
+		getAttachFiles(boardNo)
+	})
+	</script>
 </head>
 <body>
 	<h2>글 읽기</h2>  <!--  /board/delete -->
@@ -24,6 +32,31 @@
 				<td>	
 					<textarea name="content" th:field="*{content}" rows="20" cols="80" readonly></textarea>
 				</td>
+			</tr>
+			<tr>
+				<td>파일</td>
+				<td>
+					<!-- 파일 목록 -->
+					<div class="fileList">
+						<div th:each="file : ${fileList}">
+							<a th:href="|/file?fileNo=${file.fileNo}|" th:text="${file.fileName}"></a>
+							<img th:src="|/file/img?fileNo=${file.fileNo}|" width="100" />
+						</div>
+					</div>
+					<!-- 전체 다운로드	-->
+					<div th:if="!${ #lists.isEmpty(fileList)}">
+						<a th:href="|/file/zip?boardNo=${board.boardNo}&title=${board.title}|">
+							전체 다운로드
+						</a>
+					</div>	
+				</td>
+			</tr>
+			<tr>
+				<td>썸네일</td>
+				<td>
+					<div class="attachList"></div>
+				</td>
+			
 			</tr>
 		</table>
 	</form>

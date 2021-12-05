@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import aloha.domain.Board;
+import aloha.domain.FileInfo;
 import aloha.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,19 +69,27 @@ public class BoardController {
 		log.info("boardNo : " + boardNo);
 		log.info("board : " + board.toString());
 		
+		List<FileInfo> fileList = service.fileList(boardNo);
+		
 		model.addAttribute("board", board);
+		model.addAttribute("fileList", fileList);
 	}
 	
 	// 게시글 수정 - 화면
 	@GetMapping("/update")
 	public void updateForm(Model model, @RequestParam("boardNo") Integer boardNo) throws Exception{
 		// 게시글 읽기 요청
+		// 게시글 읽기 요청
 		Board board = service.read(boardNo);
 		
-//		log.info("boardNo : " + boardNo);
-//		log.info("board : " + board.toString());
+		log.info("boardNo : " + boardNo);
+		log.info("board : " + board.toString());
+		
+		List<FileInfo> fileList = service.fileList(boardNo);
 		
 		model.addAttribute("board", board);
+		model.addAttribute("fileList", fileList);
+	
 	}	
 	
 	// 게시글 수정 - 처리
@@ -103,7 +113,6 @@ public class BoardController {
 	}
 
 	// 게시글 삭제 - 처리
-	// 게시글 수정 - 처리
 	@PostMapping("/delete")
 	public String delete(Model model, Integer boardNo) throws Exception{
 		
@@ -120,6 +129,14 @@ public class BoardController {
 		return "board/success";
 	
 	}
+	
+	// 파일 목록
+	@ResponseBody
+	@GetMapping("/files")
+	public List<FileInfo> fileList(Integer boardNo) throws Exception {
+		return service.fileList(boardNo);
+	}
+	
 	
 	
 }

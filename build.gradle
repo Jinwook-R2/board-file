@@ -29,6 +29,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.4'
 }
 
 test {

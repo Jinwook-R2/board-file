@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2>글 수정</h2>  <!--  /board/delete -->
-	<form id="board" action="/board/update" th:object="${board}" method="post">
+	<form id="board" action="/board/update" th:object="${board}" method="post" enctype="multipart/form-data">
 		<input type="hidden" th:value="*{boardNo}" name="boardNo" id="boardNo" />
 		<table>
 			<tr>
@@ -25,9 +25,34 @@
 					<textarea name="content" th:field="*{content}" rows="20" cols="80"></textarea>
 				</td>
 			</tr>
+			<tr>
+				<td>파일</td>
+				<td>
+					<input type="file" name="file" multiple/>
+				</td>
+			</tr>
+			<tr>
+				<td>파일</td>
+				<td>
+					<div class="fileList">
+						<div th:each="file : ${fileList}">
+							<a th:href="|/file?fileNo=${file.fileNo}|" th:text="${file.fileName}"></a>
+							<!-- 삭제버튼	 -->
+							<a href="javascript:;" th:data="${file.fileNo}" class="fileDelete">
+								<img src="/img/cancel.png" alt="cancel"/>
+							</a>
+						</div>
+					<!-- 전체 다운로드	-->
+						<div th:if="!${ #lists.isEmpty(fileList)}">
+						<a th:href="|/file/zip?boardNo=${board.boardNo}&title=${board.title}|">
+							전체 다운로드
+						</a>
+					</div>
+					</div>	
+				</td>
+			</tr>
 		</table>
 	</form>
-	
 	<div>
 		<button type="button" id="btnUpdate">수정</button>
 		<button type="button" id="btnDelete">삭제</button>
